@@ -1,9 +1,6 @@
-package goldenMaster
-
-import gildedRose.Item
+package GildedRoseKata
 
 class GoldenMaster(val items: Array[Item]) {
-
   def updateGoldenMasterQuality() {
     for (i <- 0 until items.length) {
       if (!items(i).name.equals("Aged Brie")

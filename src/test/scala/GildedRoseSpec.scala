@@ -1,7 +1,4 @@
-package example
-
-import gildedRose.{GildedRose, Item}
-import goldenMaster.GoldenMaster
+import GildedRoseKata.{GildedRose, GoldenMaster, Item}
 import org.scalacheck.Gen
 import org.scalatest._
 import org.scalatest.prop.PropertyChecks
@@ -25,14 +22,14 @@ class GildedRoseSpec extends FlatSpec with Matchers with PropertyChecks {
     name <- itemNames
     sellIn <- sellInDays
     quality <- qualities
-  } yield new Item(name, sellIn, quality)
+  } yield Item(name, sellIn, quality)
 
-  val itemArrays = Gen.containerOf[Array, Item](items)
+  val itemArrays: Gen[Array[Item]] = Gen.containerOf[Array, Item](items)
 
   val daysToPass: Gen[Int] = Gen.posNum[Int]
 
   "The refactored gilded rose" should "behave like the golden master" in {
-    forAll(daysToPass, itemArrays.map(a => (copyArray(a), a))) { case (days, (items1, items2)) =>
+    forAll(daysToPass, itemArrays.map(items => (copyArray(items), items))) { case (days, (items1, items2)) =>
 
       val master = new GoldenMaster(items1)
       val instance = new GildedRose(items2)
