@@ -39,7 +39,13 @@ class GildedRoseSpec extends FlatSpec with Matchers with PropertyChecks {
         instance.updateQuality()
       }
 
+      instance.items.length shouldBe master.items.length
       instance.items shouldBe master.items
+
+      for((item,x)<-master.items.zipWithIndex){
+        val itemToCompare = instance.items(x)
+        println(s"\n ${item.name} - ${item.quality} - ${item.sellIn} ==== ${itemToCompare.name} - ${itemToCompare.quality} - ${itemToCompare.sellIn}")
+      }
     }
   }
 }
