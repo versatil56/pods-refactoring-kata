@@ -34,10 +34,13 @@ class GildedRoseSpec extends FlatSpec with Matchers with PropertyChecks {
       val master = new GoldenMaster(items1)
       val instance = new GildedRose(items2)
 
+      println( s"Before test Gilded rose length ${instance.items.length} shouldBe Golden master length ${master.items.length}")
+
       for (_ <- 1 to days) {
         master.updateGoldenMasterQuality()
         instance.updateQuality()
       }
+      println( s"After test Gilded rose length ${instance.items.length} shouldBe Golden master length ${master.items.length}")
 
       instance.items.length shouldBe master.items.length
       instance.items shouldBe master.items

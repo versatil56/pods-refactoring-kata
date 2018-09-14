@@ -51,7 +51,9 @@ class GoldenMaster(val items: Array[Item]) {
           }
         }
       }
+      println( "Original Item:" + (items(i).toString))
     }
+
   }
 }
 
