@@ -6,16 +6,19 @@ import org.scalatest.prop.PropertyChecks
 
 class GildedRoseSpec extends FlatSpec with Matchers with PropertyChecks {
 
+  import GildedRoseKata.Inventory._
+
   def copyArray(arr: Array[Item]): Array[Item] = arr.clone().map(_.copy())
 
   val sellInDays = Gen.chooseNum[Int](-10, 10)
   val qualities = Gen.posNum[Int]
+
   val itemNames = Gen.oneOf(
-    "Normal item",
-    "Aged Brie",
-    "Sulfuras, Hand of Ragnaros",
-    "Backstage passes to a TAFKAL80ETC concert",
-    "+5 Dexterity Vest"
+    NormalItem,
+    AgedBrie,
+    Sulfuras,
+    BackstagePass,
+    Vest
   )
 
   val items: Gen[Item] = for {
@@ -48,4 +51,5 @@ class GildedRoseSpec extends FlatSpec with Matchers with PropertyChecks {
       }
     }
   }
+  
 }
