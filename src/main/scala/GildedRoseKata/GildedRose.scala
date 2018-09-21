@@ -36,7 +36,7 @@ class GildedRose(val items: Array[Item]) {
              }
            }
            
-         case "Backstage passes to a TAFKAL80ETC concert" =>
+         case BackstagePass =>
            if (item.quality < 50) {
              item.quality = item.quality + 1
 
