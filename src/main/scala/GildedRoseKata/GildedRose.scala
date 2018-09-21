@@ -4,6 +4,43 @@ class GildedRose(val items: Array[Item]) {
 
   import Inventory._
 
+  def updateQuality() {
+
+   items.foreach { item =>
+     if(item.name == Sulfuras){
+       item.quality
+     } else {
+       item.name match {
+         case AgedBrie =>
+           (increaseQuality andThen reduceSellIn andThen increaseQualityIfSellInApproaches)(item)
+
+         case "Backstage passes to a TAFKAL80ETC concert" =>
+           (increaseQuality andThen increaseQualityWhen10DaysOrLess andThen increaseQualityWhen5DaysOrLess andThen reduceSellIn andThen zeroQuality)(item)
+
+         case _ =>
+           (reduceQuality andThen reduceSellIn andThen reduceQualityBasedOnSellIn)(item)
+       }
+     }
+    }
+  }
+
+  val reduceQuality = (item: Item) => {
+    if (item.quality > 0) {
+      item.quality = item.quality - 1
+      item
+    } else item
+  }
+
+  val reduceQualityBasedOnSellIn = (item: Item) => {
+    if(item.sellIn < 0) {
+      if (item.quality > 0) {
+        item.quality = item.quality - 1
+      }
+      item
+    } else item
+  }
+
+
   val increaseQuality= (item: Item) =>
   {
     if (item.quality < 50) {
@@ -25,54 +62,30 @@ class GildedRose(val items: Array[Item]) {
     item
   }
 
-  def updateQuality() {
-
-   items.foreach { item =>
-     if(item.name == Sulfuras){
-       item.quality
-     } else {
-       item.name match {
-         case AgedBrie =>
-           (increaseQuality andThen reduceSellIn andThen increaseQualityIfSellInApproaches)(item)
-           
-         case "Backstage passes to a TAFKAL80ETC concert" =>
-           if (item.quality < 50) {
-             item.quality = item.quality + 1
-
-               if (item.sellIn < 11) {
-                 if (item.quality < 50) {
-                   item.quality = item.quality + 1
-                 }
-               }
-
-               if (item.sellIn < 6) {
-                 if (item.quality < 50) {
-                   item.quality = item.quality + 1
-                 }
-               }
-           }
-           item.sellIn = item.sellIn - 1
-           if(item.sellIn < 0) {
-             item.quality = item.quality - item.quality
-           }
-           
-         case _ =>
-
-           if (item.quality > 0) {
-               item.quality = item.quality - 1
-           }
-             item.sellIn = item.sellIn - 1
-           if(item.sellIn < 0) {
-             if (item.quality > 0) {
-                 item.quality = item.quality - 1
-             }
-           }
-           
-       }
-     }
-    }
+  val increaseQualityWhen10DaysOrLess = (item: Item) => {
+    if (item.sellIn < 11) {
+      if (item.quality < 50) {
+        item.quality = item.quality + 1
+      }
+      item
+    } else item
   }
 
+  val increaseQualityWhen5DaysOrLess = (item: Item) => {
+    if (item.sellIn < 6) {
+      if (item.quality < 50) {
+        item.quality = item.quality + 1
+      }
+      item
+    } else item
+  }
+
+  val zeroQuality = (item: Item) => {
+    if(item.sellIn < 0) {
+      item.quality = 0
+      item
+    } else item
+  }
 }
 
 
