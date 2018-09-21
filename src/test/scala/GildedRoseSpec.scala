@@ -44,7 +44,7 @@ class GildedRoseSpec extends FlatSpec with Matchers with PropertyChecks {
 
       for((item,x)<-master.items.zipWithIndex){
         val itemToCompare = instance.items(x)
-        println(s"\n ${item.name} - ${item.quality} - ${item.sellIn} ==== ${itemToCompare.name} - ${itemToCompare.quality} - ${itemToCompare.sellIn}")
+        println(s"\n ${item.name} - ${item.quality} - ${item.bestBeforeDate} ==== ${itemToCompare.name} - ${itemToCompare.quality} - ${itemToCompare.bestBeforeDate}")
       }
     }
   }
