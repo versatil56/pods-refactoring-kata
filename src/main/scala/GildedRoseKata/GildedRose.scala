@@ -6,26 +6,79 @@ class GildedRose(val items: Array[Item]) {
 
   def updateQuality() {
    items.foreach { item =>
+     if(item.name == "Sulfuras, Hand of Ragnaros"){
+       item.quality
+     } else {
+       item.name match {
+         case "Aged Brie" =>
+           if (item.quality < 50) {
+             item.quality = item.quality + 1
 
-      if (!item.name.equals(AgedBrie) && !item.name.equals(BackstagePass)) {
-        reduceQuality(item)
-      } else {
-        increaseQuality(item)
-      }
+             if (item.name.equals("Backstage passes to a TAFKAL80ETC concert")) {
+               if (item.sellIn < 11) {
+                 if (item.quality < 50) {
+                   item.quality = item.quality + 1
+                 }
+               }
 
-      if (!item.name.equals(Sulfuras)) {
-        item.sellIn = item.sellIn - 1
-      }
+               if (item.sellIn < 6) {
+                 if (item.quality < 50) {
+                   item.quality = item.quality + 1
+                 }
+               }
+             }
+           }
+           item.sellIn = item.sellIn - 1
 
-      if (item.sellIn < 0) {
-        item.name match {
-          case AgedBrie if item.quality < 50 => item.quality = item.quality + 1
-          case AgedBrie => ()
-          case BackstagePass => item.quality = 0
-          case _ => reduceQuality(item)
-        }
-      }
+           if(item.sellIn < 0) {
+             if (item.quality < 50) {
+               item.quality = item.quality + 1
+             }
+           }
+           
+         case "Backstage passes to a TAFKAL80ETC concert" =>
+           if (item.quality < 50) {
+             item.quality = item.quality + 1
 
+             if (item.name.equals("Backstage passes to a TAFKAL80ETC concert")) {
+               if (item.sellIn < 11) {
+                 if (item.quality < 50) {
+                   item.quality = item.quality + 1
+                 }
+               }
+
+               if (item.sellIn < 6) {
+                 if (item.quality < 50) {
+                   item.quality = item.quality + 1
+                 }
+               }
+             }
+           }
+           item.sellIn = item.sellIn - 1
+           if(item.sellIn < 0) {
+             item.quality = item.quality - item.quality
+           }
+           
+         case _ =>
+
+           if (item.quality > 0) {
+             if (!item.name.equals("Sulfuras, Hand of Ragnaros")) {
+               item.quality = item.quality - 1
+             }
+           }
+           if (!item.name.equals("Sulfuras, Hand of Ragnaros")) {
+             item.sellIn = item.sellIn - 1
+           }
+           if(item.sellIn < 0) {
+             if (item.quality > 0) {
+               if (!item.name.equals("Sulfuras, Hand of Ragnaros")) {
+                 item.quality = item.quality - 1
+               }
+             }
+           }
+           
+       }
+     }
     }
   }
 
