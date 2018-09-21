@@ -2,31 +2,52 @@ package GildedRoseKata
 
 class GoldenMaster(val items: Array[Item]) {
   def updateGoldenMasterQuality() {
-    for (i <- items.indices) {
+    for (currentItem <- items.indices) {
+      if (notALegendaryItem(currentItem)) {
+        processAgedBrie(currentItem)
 
-      if (items(i).name.equals("Aged Brie") || items(i).name.equals("Backstage passes to a TAFKAL80ETC concert")) {
-        if (items(i).quality < 50) {
-          items(i).quality = increaseQuality(i)
-        }
-      } else {
-        if (items(i).quality > 0) {
-          if (!items(i).name.equals("Sulfuras, Hand of Ragnaros")) {
-            items(i).quality = decreaseQuality(i)
-          }
-        }
+        processNormalItems(currentItem)
+
+        processConcertTickets(currentItem)
+
+        reduceBestBeforeDate(currentItem)
+
+        processItemsOutOfDate(currentItem)
       }
-
-      processConcertTickets(i)
-
-      if (!items(i).name.equals("Sulfuras, Hand of Ragnaros")) {
-        items(i).bestBeforeDate = reduceBestBeforeDate(i)
-      }
-
-      processItemsOutOfDate(i)
     }
   }
 
-  private def processConcertTickets(i: Int) = {
+  private def processNormalItems(currentItem: Int) = {
+    if (notASpecialItem(currentItem)) {
+      if (items(currentItem).quality > 0) {
+        items(currentItem).quality = decreaseQuality(currentItem)
+      }
+    }
+  }
+
+  private def processAgedBrie(currentItem: Int) = {
+    if (items(currentItem).name.equals("Aged Brie")) {
+      if (items(currentItem).quality < 50) {
+        items(currentItem).quality = increaseQuality(currentItem)
+      }
+    }
+  }
+
+  private def notASpecialItem(currentItem: Int) = {
+    !items(currentItem).name.equals("Aged Brie") && !items(currentItem).name.equals("Backstage passes to a TAFKAL80ETC concert")
+  }
+
+  private def notALegendaryItem(i: Int) = {
+    !items(i).name.equals("Sulfuras, Hand of Ragnaros")
+  }
+
+  private def processConcertTickets(i: Int): Unit = {
+    if (items(i).name.equals("Backstage passes to a TAFKAL80ETC concert")) {
+      if (items(i).quality < 50) {
+        items(i).quality = increaseQuality(i)
+      }
+    }
+
     if (items(i).name.equals("Backstage passes to a TAFKAL80ETC concert")) {
       if (items(i).quality < 50) {
         if (items(i).name.equals("Backstage passes to a TAFKAL80ETC concert")) {
@@ -68,7 +89,7 @@ class GoldenMaster(val items: Array[Item]) {
   }
 
   private def reduceBestBeforeDate(i: Int) = {
-    items(i).bestBeforeDate - 1
+    items(i).bestBeforeDate = items(i).bestBeforeDate - 1
   }
 
   private def removeAllQuality(i: Int) = {
